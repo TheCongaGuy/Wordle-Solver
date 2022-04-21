@@ -9,7 +9,8 @@ To use in your program,
 ## Methods
 There are several methods attached to this Wordle Solver, meaning that this class alone cannot solve a Wordle. However because of this, you can fine tune your program.
 
-- `print(solver)` Print statement will print the number of possible words remaining.
+- `print(solver)`  Print statement will print the number of possible words remaining.
+- `solver.removeGuess(word)`  Method removes a word from the Wordle Solver's list of words
 - `solver.blackLet(character)`  Method will take a character and add it to the Wordle Solver's list of non-usable characters.
 - `solver.yellowLet(character)`  Method will ask the user for the index of the yellow character given, and remove any impossible words.
 - `solver.greenLet(character)`  Method will ask the user for the index of the green character given, and remove any impossible words.
@@ -28,16 +29,16 @@ There are several methods attached to this Wordle Solver, meaning that this clas
           # Ask if wordle recognizes this word:
           while input(f'Does wordle recognize "{guess}"? (y/n): ').lower() == "n":
               # Remove the word and choose another if word was not recognized
-              wordleSolver.wordList.remove(guess)
+              wordleSolver.removeGuess(guess)
               guess = wordleSolver.getGuesses()
 
-          # For each letter in the guess:
           for letter in guess:
-              # If the letter has not been guessed before:
               if letter not in wordleSolver.triedLetters:
+                  # Add a new letter to the Tried Letter list if the current letter is new
                   wordleSolver.triedLetters.append(letter)
+              
               result = input(f'What was the best result of the letter {letter} (g/y/b): ')
-              # If the result was green; ask for the index
+
               if result.lower() == "g":
                   wordleSolver.greenLet(letter)
 
