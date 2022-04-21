@@ -33,10 +33,6 @@ There are several methods attached to this Wordle Solver, meaning that this clas
               guess = wordleSolver.getGuesses()
 
           for letter in guess:
-              if letter not in wordleSolver.triedLetters:
-                  # Add a new letter to the Tried Letter list if the current letter is new
-                  wordleSolver.triedLetters.append(letter)
-              
               result = input(f'What was the best result of the letter {letter} (g/y/b): ')
 
               if result.lower() == "g":
