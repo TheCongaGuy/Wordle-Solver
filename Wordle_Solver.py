@@ -148,3 +148,7 @@ class WordleBot:
                 if char in word and word[index] != char:
                     self.wordList.remove(word)
                     changed = True
+    
+    # Method to remove a guess
+    def removeGuess(self, word):
+        self.wordList.remove(word)
