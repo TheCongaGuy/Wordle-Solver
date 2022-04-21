@@ -14,12 +14,12 @@ class WordleBot:
         self.wordList = []
         # List of all letters that have been tested
         self.triedLetters = []
-        # List of letters that do not show (Black letters)
-        self.notUsed = []
-        # List of letters who's position is not known (Yellow letters)
-        self.closeLetters = []
-        # Dictionary of letters who's position has been correctly identified (Green letters)
-        self.knownLetters = {}
+        # List of letters that do not show
+        self.blackLetters = []
+        # List of letters who's position is not known
+        self.yellowLetters = []
+        # Dictionary of letters who's position has been correctly identified
+        self.greenLetters = {}
 
         # Access the words document
         wordsAddress = open("Words.txt")
@@ -54,6 +54,24 @@ class WordleBot:
     def __repr__(self):
         return f'{len(self.wordList)} words remaining.'
 
+        # For each letter in the letter list:
+        for letter in self.letterList:
+            # Instantiate a count for how many times that letter is used and total letters
+            rankLetterCount = 0
+            allLetterCount = 0
+            # For each word in the word list:
+            for word in self.wordList:
+                # For each letter in the word:
+                for wLet in word:
+                    # If the letter is equal to the current ranked letter; add to the counter
+                    if letter == wLet:
+                        rankLetterCount += 1
+                    # Count the letter
+                    allLetterCount += 1
+
+            # Assign that letter to the dictionary with it's percentage ranking
+            self.letterRank[letter] = rankLetterCount / allLetterCount
+
     # Method to obtain a guess:
     def getGuesses(self):
         # Instantiate a grading system
@@ -69,7 +87,7 @@ class WordleBot:
             # For each letter of the guess:
             for letter in guess:
                 # If the guess contains a letter not used; remove the letter from guess list, and word list
-                if letter in self.notUsed:
+                if letter in self.blackLetters:
                     # To avoid error; check to see if the word is still in the word list
                     if guess in self.wordList:
                         self.wordList.remove(guess)
@@ -80,17 +98,17 @@ class WordleBot:
                     continue
                 
                 # If the guess contains a yellow letter; add 2 to it's score
-                elif letter in self.closeLetters:
+                elif letter in self.yellowLetters:
                     score += 2 * self.letterRank[letter]
 
                 # If the guess contains a green letter; add 1 to it's score
-                elif letter in self.knownLetters:
-                    if guess.index(letter) == self.knownLetters[letter]:
+                elif letter in self.greenLetters:
+                    if guess.index(letter) == self.greenLetters[letter]:
                         score += 1 * self.letterRank[letter]
 
                 # If it is an unused letter, add a special calculation to its score
                 else:
-                    score += (WordleBot.letters - 2 - (1 / WordleBot.letters * len(self.closeLetters)) - len(self.knownLetters) // 1) * self.letterRank[letter]
+                    score += (WordleBot.letters - 2 - (1 / WordleBot.letters * len(self.yellowLetters)) - len(self.greenLetters) // 1) * self.letterRank[letter]
 
                 # If there is more than one instance of this letter; subtract 1 point from it's score
                 if guess.count(letter) > 1:
