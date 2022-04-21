@@ -1,2 +1,2 @@
 # Wordle-Solver
-A small Python class to solve wordle games
+This project is in responce to NYT adding double letters to Wordle. 
