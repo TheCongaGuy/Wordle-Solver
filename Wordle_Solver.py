@@ -31,9 +31,10 @@ class WordleBot:
                 # Append it to the word list, removing the \n
                 self.wordList.append(line[:-1])
 
+        print("Wordle Solver Initialized")
+        print("Ranking Letters...\n")
         # For each letter in the letter list:
         for letter in self.letterList:
-            print(f'Ranking Letter "{letter}"')
             # Instantiate a count for how many times that letter is used and total letters
             rankLetterCount = 0
             allLetterCount = 0
@@ -53,24 +54,6 @@ class WordleBot:
     # Print statement setup:
     def __repr__(self):
         return f'{len(self.wordList)} words remaining.'
-
-        # For each letter in the letter list:
-        for letter in self.letterList:
-            # Instantiate a count for how many times that letter is used and total letters
-            rankLetterCount = 0
-            allLetterCount = 0
-            # For each word in the word list:
-            for word in self.wordList:
-                # For each letter in the word:
-                for wLet in word:
-                    # If the letter is equal to the current ranked letter; add to the counter
-                    if letter == wLet:
-                        rankLetterCount += 1
-                    # Count the letter
-                    allLetterCount += 1
-
-            # Assign that letter to the dictionary with it's percentage ranking
-            self.letterRank[letter] = rankLetterCount / allLetterCount
 
     # Method to obtain a guess:
     def getGuesses(self):
@@ -128,3 +111,40 @@ class WordleBot:
 
         # Return the selected word
         return selectedWord
+
+    # Method to set a Black Letter
+    def blackLet(self, char):
+        self.blackLetters.append(char)
+
+    # Method to set a Yellow Letter
+    def yellowLet(self, char):
+        # Obtain the index of the yellow letter
+        index = int(input(f'What was the index of the yellow {char} (1-{self.letters}): ')) - 1
+        self.yellowLetters.append(char)
+        # Remove all words that have that letter in that index
+        changed = True
+        while changed:
+            changed = False
+            for word in self.wordList:
+                if word[index] == char:
+                    self.wordList.remove(word)
+                    changed = True
+
+    # Method to set a Green Letter
+    def greenLet(self, char):
+        # Remove any instances of this letter in the yellow letters
+        if char in self.yellowLetters:
+            self.yellowLetters.remove(char)
+
+        # Obtain the index of the green letter
+        index = int(input(f'What was the index of the green {char} (1-{self.letters}): ')) - 1
+        self.greenLetters[char] = index
+
+        # Remove all words that have that letter, but not at the right index
+        changed = True
+        while changed:
+            changed = False
+            for word in self.wordList:
+                if char in word and word[index] != char:
+                    self.wordList.remove(word)
+                    changed = True
