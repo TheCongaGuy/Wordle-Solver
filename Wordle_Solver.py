@@ -12,8 +12,6 @@ class WordleBot:
 
         # List of usable 5 letter words
         self.wordList = []
-        # List of all letters that have been tested
-        self.triedLetters = []
         # List of letters that do not show
         self.blackLetters = []
         # List of letters who's position is not known
@@ -111,7 +109,9 @@ class WordleBot:
 
         # Return the selected word
         return selectedWord
-
+    
+    # Method to record attempted letters
+    
     # Method to set a Black Letter
     def blackLet(self, char):
         self.blackLetters.append(char)
