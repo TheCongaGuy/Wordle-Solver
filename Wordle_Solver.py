@@ -54,24 +54,6 @@ class WordleBot:
     def __repr__(self):
         return f'{len(self.wordList)} words remaining.'
 
-        # For each letter in the letter list:
-        for letter in self.letterList:
-            # Instantiate a count for how many times that letter is used and total letters
-            rankLetterCount = 0
-            allLetterCount = 0
-            # For each word in the word list:
-            for word in self.wordList:
-                # For each letter in the word:
-                for wLet in word:
-                    # If the letter is equal to the current ranked letter; add to the counter
-                    if letter == wLet:
-                        rankLetterCount += 1
-                    # Count the letter
-                    allLetterCount += 1
-
-            # Assign that letter to the dictionary with it's percentage ranking
-            self.letterRank[letter] = rankLetterCount / allLetterCount
-
     # Method to obtain a guess:
     def getGuesses(self):
         # Instantiate a grading system
