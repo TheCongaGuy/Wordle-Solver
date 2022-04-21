@@ -17,7 +17,7 @@ class WordleBot:
         # List of letters that do not show (Black letters)
         self.notUsed = []
         # List of letters who's position is not known (Yellow letters)
-        self.yellowLetters = []
+        self.closeLetters = []
         # Dictionary of letters who's position has been correctly identified (Green letters)
         self.knownLetters = {}
 
@@ -98,7 +98,7 @@ class WordleBot:
                     continue
                 
                 # If the guess contains a yellow letter; add 2 to it's score
-                elif letter in self.yellowLetters:
+                elif letter in self.closeLetters:
                     score += 2 * self.letterRank[letter]
 
                 # If the guess contains a green letter; add 1 to it's score
@@ -108,7 +108,7 @@ class WordleBot:
 
                 # If it is an unused letter, add a special calculation to its score
                 else:
-                    score += (WordleBot.letters - 2 - (1 / WordleBot.letters * len(self.yellowLetters)) - len(self.knownLetters) // 1) * self.letterRank[letter]
+                    score += (WordleBot.letters - 2 - (1 / WordleBot.letters * len(self.closeLetters)) - len(self.knownLetters) // 1) * self.letterRank[letter]
 
                 # If there is more than one instance of this letter; subtract 1 point from it's score
                 if guess.count(letter) > 1:
@@ -128,56 +128,3 @@ class WordleBot:
 
         # Return the selected word
         return selectedWord
-
-# Instantiate a wordle bot
-wordleSolver = WordleBot()
-
-# While the word has not been guessed:
-while input("Has the wordle been solved? (y/n): ").lower() == "n":    
-    # Get a guess
-    guess = wordleSolver.getGuesses()
-
-    # Print number of possible words
-    print(wordleSolver)
-
-    # Ask if wordle recognizes this word:
-    while input(f'Does wordle recognize "{guess}"? (y/n): ').lower() == "n":
-        # Remove the word and choose another if word was not recognized
-        wordleSolver.wordList.remove(guess)
-        guess = wordleSolver.getGuesses()
-
-    # For each letter in the guess:
-    for letter in guess:
-        # If the letter has not been guessed before:
-        if letter not in wordleSolver.triedLetters:
-            wordleSolver.triedLetters.append(letter)
-        result = input(f'What was the best result of the letter {letter} (g/y/b): ')
-        # If the result was green; ask for the index
-        if result.lower() == "g":
-            if letter in wordleSolver.yellowLetters:
-                wordleSolver.yellowLetters.remove(letter)
-            index = int(input(f'What was the index of the green {letter} (1-{WordleBot.letters}): ')) - 1
-            wordleSolver.knownLetters[letter] = index
-            changed = True
-            while changed:
-                changed = False
-                for word in wordleSolver.wordList:
-                    if letter in word and word[index] != letter:
-                        wordleSolver.wordList.remove(word)
-                        changed = True
-
-        if result.lower() == "y":
-            index = int(input(f'What was the index of the yellow {letter} (1-{WordleBot.letters}): ')) - 1
-            wordleSolver.yellowLetters.append(letter)
-            # Remove all words that have that letter in that index
-            changed = True
-            while changed:
-                changed = False
-                for word in wordleSolver.wordList:
-                    if word[index] == letter:
-                        wordleSolver.wordList.remove(word)
-                        changed = True
-
-        if result.lower() == "b":
-            wordleSolver.notUsed.append(letter)
-    #wordleSolver.rankLetters()
