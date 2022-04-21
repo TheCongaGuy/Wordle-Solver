@@ -110,8 +110,6 @@ class WordleBot:
         # Return the selected word
         return selectedWord
     
-    # Method to record attempted letters
-    
     # Method to set a Black Letter
     def blackLet(self, char):
         self.blackLetters.append(char)
