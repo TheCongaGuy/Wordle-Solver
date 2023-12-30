@@ -111,13 +111,20 @@ class WordleBot:
         return selectedWord
     
     # Method to set a Black Letter
-    def blackLet(self, char):
+    def blackLet(self, char, index):
         self.blackLetters.append(char)
+        # Remove all words that have that letter
+        changed = True
+        while changed:
+            changed = False
+            for word in self.wordList:
+                if char in word:
+                    self.wordList.remove(word)
+                    changed = True
 
     # Method to set a Yellow Letter
-    def yellowLet(self, char):
+    def yellowLet(self, char, index):
         # Obtain the index of the yellow letter
-        index = int(input(f'What was the index of the yellow {char} (1-{self.letters}): ')) - 1
         self.yellowLetters.append(char)
         # Remove all words that have that letter in that index
         changed = True
@@ -129,13 +136,11 @@ class WordleBot:
                     changed = True
 
     # Method to set a Green Letter
-    def greenLet(self, char):
+    def greenLet(self, char, index):
         # Remove any instances of this letter in the yellow letters
         if char in self.yellowLetters:
             self.yellowLetters.remove(char)
 
-        # Obtain the index of the green letter
-        index = int(input(f'What was the index of the green {char} (1-{self.letters}): ')) - 1
         self.greenLetters[char] = index
 
         # Remove all words that have that letter, but not at the right index

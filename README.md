@@ -16,30 +16,30 @@ There are several methods attached to this Wordle Solver, meaning that this clas
 - `solver.greenLet(character)`  Method will ask the user for the index of the green character given, and remove any impossible words.
 - `solver.getGuesses()`  Method will cycle through its list of words and grade them based on probability of success. It will then **return** the best word in its list as a string.
 ## Program Example
-      from Wordle_Solver import WordleBot
+    from Wordle_Solver import WordleBot
 
-      wordleSolver = WordleBot()
+    wordleSolver = WordleBot()
 
-      while input("Has the wordle been solved? (y/n): ").lower() == "n":
-          guess = wordleSolver.getGuesses()
+    while input("Has the wordle been solved? (y/n): ").lower() == "n":
+        guess = wordleSolver.getGuesses()
 
-          # Print number of possible words
-          print(wordleSolver)
+        # Print number of possible words
+        print(wordleSolver)
 
-          # Ask if wordle recognizes this word:
-          while input(f'Does wordle recognize "{guess}"? (y/n): ').lower() == "n":
-              # Remove the word and choose another if word was not recognized
-              wordleSolver.removeGuess(guess)
-              guess = wordleSolver.getGuesses()
+        # Ask if wordle recognizes this word:
+        while input(f'Does wordle recognize "{guess}"? (y/n): ').lower() == "n":
+            # Remove the word and choose another if word was not recognized
+            wordleSolver.removeGuess(guess)
+            guess = wordleSolver.getGuesses()
 
-          for letter in guess:
-              result = input(f'What was the best result of the letter {letter} (g/y/b): ')
+        for letter in guess:
+            result = input(f'What was the best result of the letter {letter} (g/y/b): ')
 
-              if result.lower() == "g":
-                  wordleSolver.greenLet(letter)
+            if result.lower() == "g":
+                wordleSolver.greenLet(letter)
 
-              if result.lower() == "y":
-                  wordleSolver.yellowLet(letter)
+            if result.lower() == "y":
+                wordleSolver.yellowLet(letter)
 
-              if result.lower() == "b":
-                  wordleSolver.blackLet(letter)
+            if result.lower() == "b":
+                wordleSolver.blackLet(letter)
